@@ -4,7 +4,7 @@ import java.util.LinkedList;//import linkedlist
 import java.util.Queue;//import queue
 
 //Antonius Miquel - 215314181
-public class tree <E extends Comparable<E>>{//deklarasi class
+public class tree {//deklarasi class
     private treeNode root;//atribut private treeNode
 
     public tree(
@@ -160,11 +160,30 @@ public class tree <E extends Comparable<E>>{//deklarasi class
             }
         }
 
-    }   
+    }
+    public treeNode searchParent(int data) {
+        treeNode current = root;
+        treeNode parent = null;
+
+        while (current != null) {
+            if (current.getiData() == data) {
+                return parent;
+            } else if (data < current.getiData()) {
+                parent = current;
+                current = current.getLeft();
+            } else {
+                parent = current;
+                current = current.getRight();
+            }
+        }
+
+        return null;
+    }
 
 
     public static void main(String[] args) {//main
         tree bst = new tree();//deklarasi objek tree
+
         System.out.println("Binary Search Tree Test\n");//cetak teks
 
         int[] dataList = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
@@ -174,7 +193,7 @@ public class tree <E extends Comparable<E>>{//deklarasi class
         for (int j : dataList) {//looping for
             bst.insert(j);//memanggil method insert dari tree dengan parameter elemen ke j dari data list
         }
-
+/*
         for(int i : delList){
             System.out.println("Deleting "+i+" from tree");
             if (bst.delete(i)){
@@ -185,9 +204,11 @@ public class tree <E extends Comparable<E>>{//deklarasi class
             System.out.print("InOrder : ");
             bst.inorder();
             System.out.println("");
-
-
-
         }
+        */
+    }
+
+    public treeNode getRoot() {
+        return root;
     }
 }
