@@ -62,55 +62,56 @@ public class tree {//deklarasi class
         return false;//return false
     }
 
-    public Boolean delete(int e){
-        if (!search(e)) {
-            return false;
+    public Boolean delete(int data){
+        //method public boolean untuk delete node dengan parameter integer
+        if (!search(data)) {//jika hasil search false
+            return false;//return false
         }else{
-            root = deleteRec(this.root,e);
+            root = deleteRec(this.root,data);
+            //simpan hasil dari method deleteRec dengan param root dan data ke root
         }
-        return (root!=null);
+        return (root!=null);//return true ketika root tidak null
     }
-    private treeNode deleteRec(treeNode root, int key)
+    private treeNode deleteRec(treeNode root, int data)
+    //method private treeNode untuk delete node secara rekursif dengan parameter treeMpde dam integer
     {
-        /* Base Case: If the tree is empty */
-        if (root == null)
-            return root;
 
-        /* Otherwise, recur down the tree */
-        if (key < root.getiData())
-            root.setLeft(deleteRec(root.getLeft(), key));
-        else if (key > root.getiData())
-            root.setRight(deleteRec(root.getRight(), key));
+        if (root == null)//jika node kosong atau null
+            return root;//return  root
 
-            // if key is same as root's
-            // key, then This is the
-            // node to be deleted
-        else {
-            // node with only one child or no child
-            if (root.getLeft() == null)
-                return root.getRight();
-            else if (root.getRight() == null)
-                return root.getLeft();
 
-            // node with two children: Get the inorder
-            // successor (smallest in the right subtree)
-            //root.setiData(minValue(root.getRight()));
+        if (data < root.getiData())//jika nilai data kurang dari nilai node
+            root.setLeft(deleteRec(root.getLeft(), data));
+        //set left dari node dengan hasil dari method deleteRec dengan parameter left dari node dandata
+        else if (data > root.getiData())//jika nilai data lebih dari nilai node
+            root.setRight(deleteRec(root.getRight(), data));
+            //set right dari node dengan hasil dari method deleteRec dengan parameter right dari node dandata
 
-            // Delete the inorder successor
-            //root.setRight(deleteRec(root.getRight(), root.getiData()));
+        else {//jika nilai node sama dengan data
+            if (root.getLeft() == null)//jika left dari node kosong
+                return root.getRight();//return right dari node
+            else if (root.getRight() == null)//jika right dari node kosong
+                return root.getLeft();//return left dari node
+
+            //jika memiliki anak 2
+            //set data node dengan minValue dari right subtree
+            root.setiData(minValue(root.getRight()));
+
+            //set right dari node dengan hasil dari method deleteRec dengan parameter kanan dari node dan nilai node
+            root.setRight(deleteRec(root.getRight(), root.getiData()));
         }
 
-        return root;
+        return root;//return node
     }
 
-    int minValue(treeNode root)
+    public int minValue(treeNode root)//method mencari successor
     {
-        int minv = root.getiData();
-        while (root.getLeft() != null) {
-            minv = root.getLeft().getiData();
-            root = root.getLeft();
+        int minv = root.getiData();//simpan data dari node ke minv
+        while (root.getLeft() != null) {//selama masih ada left dari node
+            minv = root.getLeft().getiData();//simpan data left dari node ke minv
+            root = root.getLeft();//update node dengan left dari node
         }
-        return minv;
+        return minv;//return nilai minv
 }
 
     public void preorder() {//method public preorder
@@ -161,27 +162,7 @@ public class tree {//deklarasi class
         }
 
     }
-    public treeNode searchParent(int data) {
-        treeNode current = root;
-        treeNode parent = null;
-
-        while (current != null) {
-            if (current.getiData() == data) {
-                return parent;
-            } else if (data < current.getiData()) {
-                parent = current;
-                current = current.getLeft();
-            } else {
-                parent = current;
-                current = current.getRight();
-            }
-        }
-
-        return null;
-    }
-
-
-    public static void main(String[] args) {//main
+        public static void main(String[] args) {//main
         tree bst = new tree();//deklarasi objek tree
 
         System.out.println("Binary Search Tree Test\n");//cetak teks
