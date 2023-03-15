@@ -5,7 +5,7 @@ public class Main {
         tree bst = new tree(); // Membuat objek Tree
         treeGUI gui = new treeGUI(bst);
 
-        int[] barisInsert = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
+        int[] barisInsert = {56, 30, 40, 22, 100, 80, 90, 11, 16, 63, 67, 3, 37, 112, 65};
 
         for (int i : barisInsert) {
             bst.insert(i);
@@ -19,7 +19,7 @@ public class Main {
         bst.inorder();
         System.out.println();
 
-        int[] barisNilai = {100, 63, 65, 60, 95, 88, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37};
+        int[] barisNilai = { 11, 30, 56, 63, 100, 80, 37, 65};
 
         for (int j : barisNilai) {
             int status = JOptionPane.showConfirmDialog(null, "Delete " + j + " ?", "Warning", JOptionPane.YES_NO_OPTION);
