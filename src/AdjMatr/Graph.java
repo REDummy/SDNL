@@ -1,38 +1,49 @@
 package AdjMatr;
+
 // Adjacency Matrix representation in Java
 
-public class Graph {
-    private boolean[][] adjMatrix;
-    private int numVertices;
+    public class Graph {
+        private int numVertices;
+        private int numEdges;
+        private int[][] adjacencyMatrix;
 
-    // Initialize the matrix
-    public Graph(int numVertices) {
-        this.numVertices = numVertices;
-        adjMatrix = new boolean[numVertices][numVertices];
-    }
-
-    // Add edges
-    public void addEdge(int i, int j) {
-        adjMatrix[i][j] = true;
-        adjMatrix[j][i] = true;
-    }
-
-    // Remove edges
-    public void removeEdge(int i, int j) {
-        adjMatrix[i][j] = false;
-        adjMatrix[j][i] = false;
-    }
-
-    // Print the matrix
-    public String toPrint() {
-        StringBuilder s = new StringBuilder();
-        for (int i = 0; i < numVertices; i++) {
-            s.append(i).append(": ");
-            for (boolean j : adjMatrix[i]) {
-                s.append(j ? 1 : 0).append(" ");
-            }
-            s.append("\n");
+        public Graph() {
+            this(0);
         }
-        return s.toString();
-    }
+
+        public Graph(int numVertices) {
+            this.numVertices = numVertices;
+            this.numEdges = 0;
+            this.adjacencyMatrix = new int[numVertices][numVertices];
+        }
+
+        public void addEdge(int vertex1, int vertex2) {
+            if (vertex1 < 0 || vertex1 >= numVertices || vertex2 < 0 || vertex2 >= numVertices) {
+                throw new IllegalArgumentException("Invalid vertex number");
+            }
+            adjacencyMatrix[vertex1][vertex2] = 1;
+            adjacencyMatrix[vertex2][vertex1] = 1;
+            numEdges++;
+        }
+
+        public void removeEdge(int vertex1, int vertex2) {
+            if (vertex1 < 0 || vertex1 >= numVertices || vertex2 < 0 || vertex2 >= numVertices) {
+                throw new IllegalArgumentException("Invalid vertex number");
+            }
+            adjacencyMatrix[vertex1][vertex2] = 0;
+            adjacencyMatrix[vertex2][vertex1] = 0;
+            numEdges--;
+        }
+
+        public int getNumVertices() {
+            return numVertices;
+        }
+
+        public int getNumEdges() {
+            return numEdges;
+        }
+
+        public int[][] getAdjacencyMatrix() {
+            return adjacencyMatrix;
+        }
 }
