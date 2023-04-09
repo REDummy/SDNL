@@ -1,49 +1,50 @@
 package AdjMatr;
-
 // Adjacency Matrix representation in Java
 
-    public class Graph {
-        private int numVertices;
-        private int numEdges;
-        private int[][] adjacencyMatrix;
+public class Graph {
+    private boolean[][] adjMatrix;
+    private int numVertices;
 
-        public Graph() {
-            this(0);
-        }
+    // Initialize the matrix
+    public Graph(int numVertices) {
+        this.numVertices = numVertices;
+        adjMatrix = new boolean[numVertices][numVertices];
+    }
 
-        public Graph(int numVertices) {
-            this.numVertices = numVertices;
-            this.numEdges = 0;
-            this.adjacencyMatrix = new int[numVertices][numVertices];
-        }
+    // Add edges
+    public void addEdge(int i, int j) {
+        adjMatrix[i][j] = true;
+        adjMatrix[j][i] = true;
+    }
 
-        public void addEdge(int vertex1, int vertex2) {
-            if (vertex1 < 0 || vertex1 >= numVertices || vertex2 < 0 || vertex2 >= numVertices) {
-                throw new IllegalArgumentException("Invalid vertex number");
+    // Remove edges
+    public void removeEdge(int i, int j) {
+        adjMatrix[i][j] = false;
+        adjMatrix[j][i] = false;
+    }
+
+    // Print the matrix
+    public String toPrint() {
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < numVertices; i++) {
+            s.append(i).append(": ");
+            for (boolean j : adjMatrix[i]) {
+                s.append(j ? 1 : 0).append(" ");
             }
-            adjacencyMatrix[vertex1][vertex2] = 1;
-            adjacencyMatrix[vertex2][vertex1] = 1;
-            numEdges++;
+            s.append("\n");
         }
+        return s.toString();
+    }
 
-        public void removeEdge(int vertex1, int vertex2) {
-            if (vertex1 < 0 || vertex1 >= numVertices || vertex2 < 0 || vertex2 >= numVertices) {
-                throw new IllegalArgumentException("Invalid vertex number");
-            }
-            adjacencyMatrix[vertex1][vertex2] = 0;
-            adjacencyMatrix[vertex2][vertex1] = 0;
-            numEdges--;
-        }
+    public static void main(String[] args) {
+        Graph g = new Graph(4);
 
-        public int getNumVertices() {
-            return numVertices;
-        }
+        g.addEdge(0, 1);
+        g.addEdge(0, 2);
+        g.addEdge(1, 2);
+        g.addEdge(2, 0);
+        g.addEdge(2, 3);
 
-        public int getNumEdges() {
-            return numEdges;
-        }
-
-        public int[][] getAdjacencyMatrix() {
-            return adjacencyMatrix;
-        }
+        System.out.print(g.toPrint());
+    }
 }
