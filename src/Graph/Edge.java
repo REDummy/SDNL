@@ -3,6 +3,11 @@ package Graph;
 public class Edge {
     private int vertexA, vertexB, weight;//Atribut integer
 
+    public Edge(int verA, int verB) {//Constructor dengan param
+        this.vertexA = verA;
+        this.vertexB = verB;
+    }
+
     public Edge(int verA, int verB, int weight) {//Constructor dengan param
         this.vertexA = verA;
         this.vertexB = verB;

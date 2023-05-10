@@ -37,8 +37,18 @@ public class graph {
         System.out.println(listVer[temp].getLabel());
     }
 
-    public void addEdge(int i, int j, int k) {// Method menambahkan edge ke adj Matrix
+    public void addEdgeW(int i, int j, int k) {// Method menambahkan edge ke adj Matrix
+
         adjMatrix[i][j] = k;
+    }
+
+    public void addEdgeD(int i, int j) {// Method menambahkan edge ke adj Matrix
+        adjMatrix[i][j] = 1;
+    }
+
+    public void addEdge(int i, int j) {// Method menambahkan edge ke adj Matrix
+        adjMatrix[i][j] = 1;
+        adjMatrix[j][i] = 1;
     }
 
     public void dfs() {//Method Traversal DFS
@@ -85,21 +95,27 @@ public class graph {
     }
 
 
-    public void printAdjMatrix() {//Method print AdjMatrix dengan index
+    public void printAdjMatrix() {
         System.out.print("  ");
         for (int i = 0; i < numVertices; i++) {
-            System.out.print((char) ('A' + i) + " ");
+            System.out.print((char)('A'+i)+" ");
         }
         System.out.println();
         for (int i = 0; i < numVertices; i++) {
-            System.out.print((char) ('A' + i) + " ");
+            System.out.print((char)('A'+i)+" ");
             for (int j = 0; j < numVertices; j++) {
-                System.out.print(adjMatrix[i][j] + " ");
+                if ((j >= i && adjMatrix[i][j] == 0)) {
+                    System.out.print("0 ");
+                } else {
+                    System.out.print(adjMatrix[i][j]+" ");
+                }
             }
             System.out.println();
         }
         this.reset();
     }
+
+
 
 
     private int indexVertex(char c) {// Method menghitung index  vertex
@@ -120,8 +136,8 @@ public class graph {
                     System.out.print("");
                 } else {
                     System.out.println(listVer[i].getLabel() + "- " + listVer[j].getLabel() + " , Weight = " + adjMatrix[1][j]);
-                }
 
+                }
             }
         }
     }
@@ -160,8 +176,6 @@ public class graph {
 
     }
 
-
-
     public void getMSTPrim() {//Method untuk mencari MST dengan algoritma Prim
         ArrayList<Edge> edge = getPrimEdges();
         int total = 0;
@@ -172,6 +186,47 @@ public class graph {
         }
         System.out.println("Total Minimum Spanning tree  =" + total);
         this.reset();
+    }
+
+    // Method for topological sorting
+    public void topologicalSort() {
+        int[] inDegree = new int[numVertices]; // Array to store in-degree of each vertex
+        for (int i = 0; i < numVertices; i++) {
+            for (int j = 0; j < numVertices; j++) {
+                if (adjMatrix[i][j] > 0) {
+                    inDegree[j]++;
+                }
+            }
+        }
+        Queue<Integer> queue = new LinkedList<>(); // Queue to store vertices with in-degree 0
+        for (int i = 0; i < numVertices; i++) {
+            if (inDegree[i] == 0) {
+                queue.add(i);
+            }
+        }
+        int count = 0; // Counter to keep track of how many vertices have been processed
+        ArrayList<Integer> sortedVertices = new ArrayList<>(); // List to store the sorted vertices
+        while (!queue.isEmpty()) {
+            int vertex = queue.poll();
+            sortedVertices.add(vertex);
+            count++;
+            for (int i = 0; i < numVertices; i++) {
+                if (adjMatrix[vertex][i] > 0) {
+                    if (--inDegree[i] == 0) {
+                        queue.add(i);
+                    }
+                }
+            }
+        }
+        if (count != numVertices) {
+            System.out.println("Error: Graph contains a cycle!");
+            return;
+        }
+        System.out.print("Topological Sort: ");
+        for (int i = 0; i < sortedVertices.size(); i++) {
+            System.out.print(listVer[sortedVertices.get(i)].getLabel() + " ");
+        }
+        System.out.println();
     }
 
 
