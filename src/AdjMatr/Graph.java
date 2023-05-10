@@ -1,49 +1,63 @@
 package AdjMatr;
+class Vertex {
+    public String label;
 
-// Adjacency Matrix representation in Java
+    public Vertex(String label) {
+        this.label = label;
+    }
+}
 
-    public class Graph {
-        private int numVertices;
-        private int numEdges;
-        private int[][] adjacencyMatrix;
+class Graph {
+    private final int MAX_VERTS = 50;
+    private Vertex[] vertexList;
+    private int[][] adjMatrix;
+    private int jumVert;
 
-        public Graph() {
-            this(0);
-        }
-
-        public Graph(int numVertices) {
-            this.numVertices = numVertices;
-            this.numEdges = 0;
-            this.adjacencyMatrix = new int[numVertices][numVertices];
-        }
-
-        public void addEdge(int vertex1, int vertex2) {
-            if (vertex1 < 0 || vertex1 >= numVertices || vertex2 < 0 || vertex2 >= numVertices) {
-                throw new IllegalArgumentException("Invalid vertex number");
+    public Graph() {
+        vertexList = new Vertex[MAX_VERTS];
+        adjMatrix = new int[MAX_VERTS][MAX_VERTS];
+        jumVert = 0;
+        for (int i = 0; i < MAX_VERTS; i++) {
+            for (int j = 0; j < MAX_VERTS; j++) {
+                adjMatrix[i][j] = 0;
             }
-            adjacencyMatrix[vertex1][vertex2] = 1;
-            adjacencyMatrix[vertex2][vertex1] = 1;
-            numEdges++;
         }
+    }
 
-        public void removeEdge(int vertex1, int vertex2) {
-            if (vertex1 < 0 || vertex1 >= numVertices || vertex2 < 0 || vertex2 >= numVertices) {
-                throw new IllegalArgumentException("Invalid vertex number");
+    public Graph(int n) {
+        vertexList = new Vertex[n];
+        adjMatrix = new int[n][n];
+        jumVert = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                adjMatrix[i][j] = 0;
             }
-            adjacencyMatrix[vertex1][vertex2] = 0;
-            adjacencyMatrix[vertex2][vertex1] = 0;
-            numEdges--;
         }
+    }
 
-        public int getNumVertices() {
-            return numVertices;
-        }
+    public void addVertex(String label) {
+        vertexList[jumVert++] = new Vertex(label);
+    }
 
-        public int getNumEdges() {
-            return numEdges;
-        }
+    public void displayVertex(int v) {
+        System.out.println(vertexList[v].label);
+    }
 
-        public int[][] getAdjacencyMatrix() {
-            return adjacencyMatrix;
+    public void addEdge(int start, int end) {
+        adjMatrix[start][end] = 1;
+        adjMatrix[end][start] = 1;
+    }
+
+    public void tampilMatrik() {
+        for (int i = 0; i < jumVert; i++) {
+            for (int j = 0; j < jumVert; j++) {
+                System.out.print(adjMatrix[i][j] + " ");
+            }
+            System.out.println();
         }
+    }
+
+    public int getJumVert() {
+        return jumVert;
+    }
 }
