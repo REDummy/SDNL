@@ -1,0 +1,179 @@
+package Graph;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
+public class graph {
+
+    private static final int MAX_VER = 10; // Maximum Vertex
+    private final int[][] adjMatrix; // Atribut AdjMatrix yang berupa array 2D
+    public vertex[] listVer; // Atribut listVer yang berupa array dari vertex
+    private int numVertices; // Atribut jumlah vertex
+
+    // Default Constructor
+    public graph() {
+        listVer = new vertex[MAX_VER];
+        adjMatrix = new int[MAX_VER][MAX_VER];
+        numVertices = 0;
+
+        for (int i = 0; i < MAX_VER; i++) {
+            for (int j = 0; j < MAX_VER; j++) {
+                adjMatrix[i][j] = 0;
+            }
+        }
+    }
+
+    public int getnVerts() {// Method public int untuk get jumlah vertex
+        return numVertices;
+    }
+
+    public void addVertex(char label) {//Method void untuk menambahkan Vertex
+        listVer[numVertices++] = new vertex(label);
+    }
+
+    public void displayVertex(int temp) {//Method Print vertex yang ada
+        System.out.println(listVer[temp].getLabel());
+    }
+
+    public void addEdge(int i, int j, int k) {// Method menambahkan edge ke adj Matrix
+        adjMatrix[i][j] = k;
+    }
+
+    public void dfs() {//Method Traversal DFS
+        Stack<Integer> stack = new Stack<>();
+        stack.push(0);
+        while (!stack.isEmpty()) {
+            int temp = stack.pop();
+            if (!listVer[temp].isVisited()) {
+                System.out.print(listVer[temp].getLabel() + ", ");
+                listVer[temp].setVisited(true);
+            }
+            for (int i = numVertices - 1; i >= 0; i--) {
+                if (adjMatrix[temp][i] >= 1 && !listVer[i].isVisited()) {
+                    stack.push(i);
+                }
+
+            }
+        }
+    }
+
+
+    public void bfs() {//Method Traversal BFS
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(0);
+        while (!queue.isEmpty()) {
+            int temp = queue.poll();
+            if (!listVer[temp].isVisited()) {
+                System.out.print(listVer[temp].getLabel() + ", ");
+                listVer[temp].setVisited(true);
+            }
+            for (int i = 0; i < numVertices; i++) {
+                if (adjMatrix[temp][i] >= 1 && !listVer[i].isVisited()) {
+                    queue.add(i);
+                }
+            }
+        }
+        this.reset();
+    }
+
+    public void reset() {//Method reset boolean visited pada vertex
+        for (int i = 0; i < numVertices; i++) {
+            listVer[i].setVisited(false);
+        }
+    }
+
+
+    public void printAdjMatrix() {//Method print AdjMatrix dengan index
+        System.out.print("  ");
+        for (int i = 0; i < numVertices; i++) {
+            System.out.print((char) ('A' + i) + " ");
+        }
+        System.out.println();
+        for (int i = 0; i < numVertices; i++) {
+            System.out.print((char) ('A' + i) + " ");
+            for (int j = 0; j < numVertices; j++) {
+                System.out.print(adjMatrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+        this.reset();
+    }
+
+
+    private int indexVertex(char c) {// Method menghitung index  vertex
+        for (int i = 0; i <= numVertices; i++) {
+            if (listVer[i].getLabel() == c) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
+    public void Show() {//Method cetak edge antar vertex
+        for (int i = 0; i < numVertices; i++) {
+            System.out.println();
+            for (int j = 0; j < adjMatrix[i].length; j++) {
+                if (adjMatrix[i][j] == 0 || adjMatrix[i][j] == -1) {
+                    System.out.print("");
+                } else {
+                    System.out.println(listVer[i].getLabel() + "- " + listVer[j].getLabel() + " , Weight = " + adjMatrix[1][j]);
+                }
+
+            }
+        }
+    }
+
+
+    public ArrayList<Edge> getPrimEdges() {
+        this.reset();
+        ArrayList<Edge> primEdge = new ArrayList<Edge>();
+        ArrayList<Integer> primVer = new ArrayList<Integer>();
+
+        int seed = indexVertex('G');
+        primVer.add(seed);
+        listVer[seed].setVisited(true);
+        while (primVer.size() < numVertices) {
+            int tempMinWeight = Integer.MAX_VALUE;
+            int tempMinIndekVertexI = -1;
+            int tempMinIndekVertexJ = -1;
+            for (int i = 0; i < primVer.size(); i++) {
+                for (int j = 0; j < numVertices; j++) {
+                    if (adjMatrix[primVer.get(i)][j] > 0 && !listVer[j].isVisited()
+                            && adjMatrix[primVer.get(i)][j] < tempMinWeight) {
+                        tempMinWeight = adjMatrix[primVer.get(i)][j];
+                        tempMinIndekVertexI = primVer.get(i);
+                        tempMinIndekVertexJ = j;
+
+                    }
+
+                }
+
+            }
+            primVer.add(tempMinIndekVertexJ);
+            listVer[tempMinIndekVertexJ].setVisited(true);
+            primEdge.add(new Edge(tempMinIndekVertexI, tempMinIndekVertexJ, tempMinWeight));
+        }
+        return primEdge;
+
+    }
+
+
+
+    public void getMSTPrim() {//Method untuk mencari MST dengan algoritma Prim
+        ArrayList<Edge> edge = getPrimEdges();
+        int total = 0;
+        for (int i = 0; i < edge.size(); i++) {
+            System.out.println("(" + listVer[edge.get(i).getVertexA()].getLabel() + ", " +
+                    listVer[edge.get(i).getVertexB()].getLabel() + ") =" + edge.get(i).getWeight());
+            total = total+edge.get(i).getWeight();
+        }
+        System.out.println("Total Minimum Spanning tree  =" + total);
+        this.reset();
+    }
+
+
+}
+
