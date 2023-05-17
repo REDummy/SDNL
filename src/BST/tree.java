@@ -1,14 +1,14 @@
 package BST;//deklarasi package
 
-import java.util.LinkedList;//import linkedlist
-import java.util.Queue;//import queue
+import java.util.LinkedList;
+import java.util.Queue;
 
 //Antonius Miquel - 215314181
 public class tree {//deklarasi class
     private treeNode root;//atribut private treeNode
 
     public tree(
-            
+
     ) {
         root = null;
     }//constructor default
@@ -29,7 +29,7 @@ public class tree {//deklarasi class
         else {//jika node tidak null
             if (data <= node.getiData())//jika data kurang dari sama dengan nilai dari node
                 node.setLeft(insert(node.getLeft(), data));
-            //set left dari node dengan node return dari method insert dengan parameter left dari node dan data
+                //set left dari node dengan node return dari method insert dengan parameter left dari node dan data
             else//jika data lebih dari nilai node
                 node.setRight(insert(node.getRight(), data));
             //set right dari node dengan node return dari method insert dengan parameter right dari node dan data
@@ -38,9 +38,10 @@ public class tree {//deklarasi class
     }
 
 
-    public boolean search(int data){//method search dengan parameter int
-        return search(this.root,data);//return search dengan paramater treeNode root dan data
+    public boolean search(int data) {//method search dengan parameter int
+        return search(this.root, data);//return search dengan paramater treeNode root dan data
     }
+
     private boolean search(treeNode node, int value) {
         //method private search dengan param treeNode dan integer
 
@@ -53,8 +54,7 @@ public class tree {//deklarasi class
         if (value < node.getiData()) {//jika nilai yang di cari lebih kecil dari data node
             return search(node.getLeft(), value);
             //return method search dengan param left dari node dan nilai yang di cari
-        }
-        else if (value > node.getiData()) {//jika nilai yang di cari lebih besar dari data node
+        } else if (value > node.getiData()) {//jika nilai yang di cari lebih besar dari data node
             return search(node.getRight(), value);
             //return method search dengan param right dari node dan nilai yang di cari
         }
@@ -62,16 +62,17 @@ public class tree {//deklarasi class
         return false;//return false
     }
 
-    public Boolean delete(int data){
+    public Boolean delete(int data) {
         //method public boolean untuk delete node dengan parameter integer
         if (!search(data)) {//jika hasil search false
             return false;//return false
-        }else{
-            root = deleteRec(this.root,data);
+        } else {
+            root = deleteRec(this.root, data);
             //simpan hasil dari method deleteRec dengan param root dan data ke root
         }
-        return (root!=null);//return true ketika root tidak null
+        return (root != null);//return true ketika root tidak null
     }
+
     private treeNode deleteRec(treeNode root, int data)
     //method private treeNode untuk delete node secara rekursif dengan parameter treeMpde dam integer
     {
@@ -82,7 +83,7 @@ public class tree {//deklarasi class
 
         if (data < root.getiData())//jika nilai data kurang dari nilai node
             root.setLeft(deleteRec(root.getLeft(), data));
-        //set left dari node dengan hasil dari method deleteRec dengan parameter left dari node dandata
+            //set left dari node dengan hasil dari method deleteRec dengan parameter left dari node dandata
         else if (data > root.getiData())//jika nilai data lebih dari nilai node
             root.setRight(deleteRec(root.getRight(), data));
             //set right dari node dengan hasil dari method deleteRec dengan parameter right dari node dandata
@@ -112,11 +113,12 @@ public class tree {//deklarasi class
             root = root.getLeft();//update node dengan left dari node
         }
         return minv;//return nilai minv
-}
+    }
 
     public void preorder() {//method public preorder
         preorder(root);//memanggil method preorder dari root
     }
+
     private void preorder(treeNode temp) {//method traversal preorder
         if (temp != null) {//jika node tidak null
             System.out.print(temp.getiData() + " ");//cetak nilai dari node
@@ -128,6 +130,7 @@ public class tree {//deklarasi class
     public void inorder() {//method public preorder
         inorder(root);//memanggil method preorder dari root
     }
+
     private void inorder(treeNode temp) {//method traversal preorder
         if (temp != null) {//jika node tidak null
             inorder(temp.getLeft());//memanggil method preOrder dengan parameter left dari node
@@ -139,6 +142,7 @@ public class tree {//deklarasi class
     public void postorder() {//method public preorder
         postorder(root);//memanggil method preorder dari root
     }
+
     private void postorder(treeNode temp) {//method traversal preorder
         if (temp != null) {//jika node tidak null
             postorder(temp.getLeft());//memanggil method preOrder dengan parameter left dari node
@@ -146,6 +150,7 @@ public class tree {//deklarasi class
             System.out.print(temp.getiData() + " ");//cetak nilai dari node
         }
     }
+
     public void levelOrder() {//method public level order
         Queue<treeNode> queue = new LinkedList<>();//deklarasi linked list bertipe treeNode dengan nama queue
         queue.add(root);//menambahkan root ke queue dan otomatis menjadikan head
@@ -162,7 +167,8 @@ public class tree {//deklarasi class
         }
 
     }
-        public static void main(String[] args) {//main
+
+    public static void main(String[] args) {//main
         tree bst = new tree();//deklarasi objek tree
 
         System.out.println("Binary Search Tree Test\n");//cetak teks

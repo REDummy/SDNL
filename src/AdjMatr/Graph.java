@@ -1,4 +1,5 @@
 package AdjMatr;
+
 class Vertex {
     public String label;
 

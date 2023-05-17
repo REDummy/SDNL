@@ -98,24 +98,22 @@ public class graph {
     public void printAdjMatrix() {
         System.out.print("  ");
         for (int i = 0; i < numVertices; i++) {
-            System.out.print((char)('A'+i)+" ");
+            System.out.print((char) ('A' + i) + "\t\t");
         }
-        System.out.println();
+        System.out.println("");
         for (int i = 0; i < numVertices; i++) {
-            System.out.print((char)('A'+i)+" ");
+            System.out.print((char) ('A' + i) + " ");
             for (int j = 0; j < numVertices; j++) {
                 if ((j >= i && adjMatrix[i][j] == 0)) {
-                    System.out.print("0 ");
+                    System.out.print("0\t\t");
                 } else {
-                    System.out.print(adjMatrix[i][j]+" ");
+                    System.out.print(adjMatrix[i][j] + "\t\t");
                 }
             }
             System.out.println();
         }
         this.reset();
     }
-
-
 
 
     private int indexVertex(char c) {// Method menghitung index  vertex
@@ -157,8 +155,7 @@ public class graph {
             int tempMinIndekVertexJ = -1;
             for (int i = 0; i < primVer.size(); i++) {
                 for (int j = 0; j < numVertices; j++) {
-                    if (adjMatrix[primVer.get(i)][j] > 0 && !listVer[j].isVisited()
-                            && adjMatrix[primVer.get(i)][j] < tempMinWeight) {
+                    if (adjMatrix[primVer.get(i)][j] > 0 && !listVer[j].isVisited() && adjMatrix[primVer.get(i)][j] < tempMinWeight) {
                         tempMinWeight = adjMatrix[primVer.get(i)][j];
                         tempMinIndekVertexI = primVer.get(i);
                         tempMinIndekVertexJ = j;
@@ -180,9 +177,8 @@ public class graph {
         ArrayList<Edge> edge = getPrimEdges();
         int total = 0;
         for (int i = 0; i < edge.size(); i++) {
-            System.out.println("(" + listVer[edge.get(i).getVertexA()].getLabel() + ", " +
-                    listVer[edge.get(i).getVertexB()].getLabel() + ") =" + edge.get(i).getWeight());
-            total = total+edge.get(i).getWeight();
+            System.out.println("(" + listVer[edge.get(i).getVertexA()].getLabel() + ", " + listVer[edge.get(i).getVertexB()].getLabel() + ") =" + edge.get(i).getWeight());
+            total = total + edge.get(i).getWeight();
         }
         System.out.println("Total Minimum Spanning tree  =" + total);
         this.reset();
@@ -229,6 +225,81 @@ public class graph {
         System.out.println();
     }
 
+    public void shortestPathDijkstra(int startVertex) {
+        int[] dist = new int[numVertices]; // Array to store the shortest distances
+        boolean[] visited = new boolean[numVertices]; // Array to track visited vertices
+        int[] previous = new int[numVertices]; // Array to store the previous vertex in the shortest path
+
+        for (int i = 0; i < numVertices; i++) {
+            dist[i] = Integer.MAX_VALUE; // Initialize distances to infinity
+            visited[i] = false; // Mark all vertices as unvisited
+            previous[i] = -1; // Set previous vertex to undefined
+        }
+
+        dist[startVertex] = 0; // Set the distance of the start vertex to 0
+
+        for (int count = 0; count < numVertices - 1; count++) {
+            int current = findMinimumDistanceVertex(dist, visited); // Find the unvisited vertex with the minimum distance
+            visited[current] = true; // Mark the current vertex as visited
+
+            for (int neighbor = 0; neighbor < numVertices; neighbor++) {
+                int edgeWeight = adjMatrix[current][neighbor];
+                if (edgeWeight > 0) { // If there is an edge between current and neighbor
+                    int newDistance = dist[current] + edgeWeight;
+                    if (newDistance < dist[neighbor]) { // If the new distance is smaller than the current distance
+                        dist[neighbor] = newDistance; // Update the distance
+                        previous[neighbor] = current; // Update the previous vertex
+                    }
+                }
+            }
+
+        }
+
+        // Print the shortest paths
+        for (int i = 0; i < numVertices; i++) {
+            if (i != startVertex) {
+                System.out.println("Shortest path from " + listVer[startVertex].getLabel() +
+                        " to " + listVer[i].getLabel() + ":");
+                if (dist[i] == Integer.MAX_VALUE) {
+                    System.out.println("No path available.");
+                } else {
+                    printShortestPath(previous, i);
+                    System.out.println("Distance: " + dist[i]);
+                }
+                System.out.println();
+            }
+        }
+    }
+
+    private int findMinimumDistanceVertex(int[] dist, boolean[] visited) {
+        int minDistance = Integer.MAX_VALUE;
+        int minVertex = -1;
+
+        for (int v = 0; v < numVertices; v++) {
+            if (!visited[v] && dist[v] < minDistance) {
+                minDistance = dist[v];
+                minVertex = v;
+            }
+        }
+
+        return minVertex;
+    }
+
+    private void printShortestPath(int[] previous, int destination) {
+        Stack<Integer> stack = new Stack<>();
+        int current = destination;
+        while (previous[current] != -1) { // Change the loop condition
+            stack.push(current);
+            current = previous[current];
+        }
+        stack.push(current); // Push the start vertex
+
+        while (!stack.isEmpty()) {
+            int vertex = stack.pop();
+            System.out.print(listVer[vertex].getLabel() + " ");
+        }
+        System.out.println();
+    }
 
 }
 

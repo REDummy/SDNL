@@ -45,6 +45,7 @@ public class treeGUI extends JPanel {
             g2.setColor(Color.BLACK);
             g2.drawLine(x, y, x2, y2);
             drawNode(g2, node.getRight(), x2, y2, spread / 2);
-  }}
+        }
+    }
 
 }

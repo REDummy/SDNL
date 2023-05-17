@@ -3,25 +3,29 @@ package Graph;
 public class main {
     public static void main(String[] args) {
         graph graph = new graph();//Instantiate objek
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 6; i++) {
             graph.addVertex((char) ('A' + i));
         }
-        graph.addEdgeD(7, 0);
-        graph.addEdgeD(3, 7);
-        graph.addEdgeD(3, 4);
-        graph.addEdgeD(2, 7);
-        graph.addEdgeD(7, 6);
-        graph.addEdgeD(7, 5);
-        graph.addEdgeD(1, 4);
-        graph.addEdgeD(1, 6);
-        graph.addEdgeD(4, 5);
+        graph.addEdgeW(0, 1,50);
+        graph.addEdgeW(0, 2,30);
+        graph.addEdgeW(0, 3,100);
+        graph.addEdgeW(0, 5,10);
+        graph.addEdgeW(1, 2,5);
+        graph.addEdgeW(2, 1,5);
+        graph.addEdgeW(3, 2,50);
+        graph.addEdgeW(3, 1,20);
+        graph.addEdgeW(4, 3,15);
+        graph.addEdgeW(4, 5,15);
+        graph.addEdgeW(5, 3,10);
+
+        graph.shortestPathDijkstra(4);
 
 
         //Memanggil Method prinjADjMatrix
         System.out.println("Adj Matrix : ");
         graph.printAdjMatrix();
 
-        graph.topologicalSort();
+//        graph.topologicalSort();
 
 //        System.out.println();
 //        graph.getMSTPrim();

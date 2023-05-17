@@ -1,4 +1,5 @@
 package BST;//deklarasi package
+
 //Antonius Miquel - 215314181
 public class treeNode {//deklarasi class
     private int iData;//atribut private integer data node

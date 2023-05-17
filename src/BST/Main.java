@@ -1,5 +1,7 @@
 package BST;
+
 import javax.swing.*;
+
 public class Main {
     public static void main(String[] args) { // Membuat method main
         tree bst = new tree(); // Membuat objek Tree
@@ -19,7 +21,7 @@ public class Main {
         bst.inorder();
         System.out.println();
 
-        int[] barisNilai = { 11, 30, 56, 63, 100, 80, 37, 65};
+        int[] barisNilai = {11, 30, 56, 63, 100, 80, 37, 65};
 
         for (int j : barisNilai) {
             int status = JOptionPane.showConfirmDialog(null, "Delete " + j + " ?", "Warning", JOptionPane.YES_NO_OPTION);
@@ -40,5 +42,5 @@ public class Main {
         JOptionPane.showMessageDialog(null, "Delete node sudah selesai dijalankan", "Warning !", JOptionPane.ERROR_MESSAGE);
         gui.frame.dispose();
 
-}
+    }
 }
