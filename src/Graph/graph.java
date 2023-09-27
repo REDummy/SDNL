@@ -100,14 +100,14 @@ public class graph {
         for (int i = 0; i < numVertices; i++) {
             System.out.print((char) ('A' + i) + "\t\t");
         }
-        System.out.println("");
+        System.out.println();
         for (int i = 0; i < numVertices; i++) {
             System.out.print((char) ('A' + i) + " ");
             for (int j = 0; j < numVertices; j++) {
                 if ((j >= i && adjMatrix[i][j] == 0)) {
-                    System.out.print("0\t\t");
+                    System.out.print("0 ");
                 } else {
-                    System.out.print(adjMatrix[i][j] + "\t\t");
+                    System.out.print(adjMatrix[i][j] + " ");
                 }
             }
             System.out.println();
@@ -186,7 +186,7 @@ public class graph {
 
     // Method for topological sorting
     public void topologicalSort() {
-        int[] inDegree = new int[numVertices]; // Array to store in-degree of each vertex
+        int[] inDegree = new int[numVertices]; // Array untuk menyimpan vertex dengan weight
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
                 if (adjMatrix[i][j] > 0) {
@@ -194,31 +194,32 @@ public class graph {
                 }
             }
         }
-        Queue<Integer> queue = new LinkedList<>(); // Queue to store vertices with in-degree 0
+        Queue<Integer> queue = new LinkedList<>(); // Queue untuk menyimpan vertex tanpa weight
         for (int i = 0; i < numVertices; i++) {
             if (inDegree[i] == 0) {
                 queue.add(i);
             }
         }
-        int count = 0; // Counter to keep track of how many vertices have been processed
-        ArrayList<Integer> sortedVertices = new ArrayList<>(); // List to store the sorted vertices
-        while (!queue.isEmpty()) {
-            int vertex = queue.poll();
-            sortedVertices.add(vertex);
+        int count = 0; // Counter
+        ArrayList<Integer> sortedVertices = new ArrayList<>(); // List untuk meyimpan vertex yang disimpan
+        while (!queue.isEmpty()) { //Selama queue tidak kosong
+            int vertex = queue.poll();//mengambil vertex dari queue menggunakan poll()
+            sortedVertices.add(vertex);// menambahkannya ke dalam sortedVertices.
             count++;
             for (int i = 0; i < numVertices; i++) {
                 if (adjMatrix[vertex][i] > 0) {
-                    if (--inDegree[i] == 0) {
+                    if (--inDegree[i] == 0) {// mengurangi inDegree[i] jika terdapat edge dari vertex yang diproses ke vertex i.
+                        //Jika inDegree[i] menjadi 0 setelah pengurangan, maka vertex i ditambahkan ke dalam queue.
                         queue.add(i);
                     }
                 }
             }
         }
-        if (count != numVertices) {
+        if (count != numVertices) {//Jika count tidak sama dengan jumlah vertex maka ada cycle
             System.out.println("Error: Graph contains a cycle!");
             return;
         }
-        System.out.print("Topological Sort: ");
+        System.out.print("Topological Sort: ");//Cetak label yang sudah di sortir
         for (int i = 0; i < sortedVertices.size(); i++) {
             System.out.print(listVer[sortedVertices.get(i)].getLabel() + " ");
         }
@@ -226,40 +227,40 @@ public class graph {
     }
 
     public void shortestPathDijkstra(int startVertex) {
-        int[] dist = new int[numVertices]; // Array to store the shortest distances
-        boolean[] visited = new boolean[numVertices]; // Array to track visited vertices
-        int[] previous = new int[numVertices]; // Array to store the previous vertex in the shortest path
+        int[] dist = new int[numVertices]; // Array untuk menyimpan weight/jarak
+        boolean[] visited = new boolean[numVertices]; // Array menyimpan status visited
+        int[] previous = new int[numVertices]; // Array untuk menyimpan array seblumnya
 
         for (int i = 0; i < numVertices; i++) {
-            dist[i] = Integer.MAX_VALUE; // Initialize distances to infinity
-            visited[i] = false; // Mark all vertices as unvisited
-            previous[i] = -1; // Set previous vertex to undefined
+            dist[i] = Integer.MAX_VALUE; //set jarak ke maxium value dari integer
+            visited[i] = false; // set visited ke false
+            previous[i] = -1; // Set previous ke undefined
         }
 
-        dist[startVertex] = 0; // Set the distance of the start vertex to 0
+        dist[startVertex] = 0; // Set jarak start vertex ke 0
 
         for (int count = 0; count < numVertices - 1; count++) {
-            int current = findMinimumDistanceVertex(dist, visited); // Find the unvisited vertex with the minimum distance
-            visited[current] = true; // Mark the current vertex as visited
+            int current = findMinimumDistanceVertex(dist, visited); // Cari jarak minimum dari yang belum di visit
+            visited[current] = true; // set vertex yang dikunjungi menjadi visited
 
             for (int neighbor = 0; neighbor < numVertices; neighbor++) {
                 int edgeWeight = adjMatrix[current][neighbor];
-                if (edgeWeight > 0) { // If there is an edge between current and neighbor
+                if (edgeWeight > 0) { // Jika ada edge
                     int newDistance = dist[current] + edgeWeight;
-                    if (newDistance < dist[neighbor]) { // If the new distance is smaller than the current distance
-                        dist[neighbor] = newDistance; // Update the distance
-                        previous[neighbor] = current; // Update the previous vertex
+                    if (newDistance < dist[neighbor]) { // jika jarak baru lebih kecil dari jarak
+                        dist[neighbor] = newDistance; // Update jarak
+                        previous[neighbor] = current; // Update previous
                     }
                 }
             }
 
         }
 
-        // Print the shortest paths
+        // cetak shortest path
         for (int i = 0; i < numVertices; i++) {
             if (i != startVertex) {
-                System.out.println("Shortest path from " + listVer[startVertex].getLabel() +
-                        " to " + listVer[i].getLabel() + ":");
+                System.out.println("Shortest path from " +
+                        listVer[startVertex].getLabel() + " to " + listVer[i].getLabel() + ":");
                 if (dist[i] == Integer.MAX_VALUE) {
                     System.out.println("No path available.");
                 } else {
@@ -271,6 +272,7 @@ public class graph {
         }
     }
 
+    //Method mencari minimum distance dengan iterating over array
     private int findMinimumDistanceVertex(int[] dist, boolean[] visited) {
         int minDistance = Integer.MAX_VALUE;
         int minVertex = -1;
@@ -285,14 +287,15 @@ public class graph {
         return minVertex;
     }
 
+    //Method cetak shortest path dengan stack
     private void printShortestPath(int[] previous, int destination) {
         Stack<Integer> stack = new Stack<>();
         int current = destination;
-        while (previous[current] != -1) { // Change the loop condition
+        while (previous[current] != -1) {
             stack.push(current);
             current = previous[current];
         }
-        stack.push(current); // Push the start vertex
+        stack.push(current);
 
         while (!stack.isEmpty()) {
             int vertex = stack.pop();

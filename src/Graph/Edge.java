@@ -8,7 +8,7 @@ public class Edge {
         this.vertexB = verB;
     }
 
-    public Edge(int verA, int verB, int weight) {//Constructor dengan param
+    public Edge(int verA, int verB, int weight) {//Construc<<???paramtor dengan param
         this.vertexA = verA;
         this.vertexB = verB;
         this.weight = weight;

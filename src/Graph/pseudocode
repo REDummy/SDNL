@@ -1,0 +1,23 @@
+
+
+
+deklarasi variable jmakan dll
+
+Simpan harga dari sayur, lauk, minum  ke variable masing- masing
+
+Buat object scanner untuk membaca input dari keyboard
+
+Baca input jumlah sayur, lauk, dan minum secara berurutan dari keyboard
+
+hitung total berdasarkan harga dan jumlah yang di pesan
+
+cetak nilai total
+
+
+
+def convert :
+    [isi kode]
+n=1234
+print(covert(n))
+
+

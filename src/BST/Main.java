@@ -7,27 +7,31 @@ public class Main {
         tree bst = new tree(); // Membuat objek Tree
         treeGUI gui = new treeGUI(bst);
 
-        int[] barisInsert = {56, 30, 40, 22, 100, 80, 90, 11, 16, 63, 67, 3, 37, 112, 65};
+        int[] dataList = { 60, 55, 100, 107, 67, 105, 57, 45, 59, 106, 43};
+        int[] delList = { 100, 55, 60, 57, 67, 105, 106, 59};
 
-        for (int i : barisInsert) {
+        for (int i : dataList) {
             bst.insert(i);
         }
-        int cek = JOptionPane.showConfirmDialog(null, "Lanjut ke delete ?", "Warning", JOptionPane.YES_NO_OPTION);
-        if (cek == 1) {
-            System.exit(0);
-        }
-        System.out.println();
-        System.out.print("In-Order : ");
-        bst.inorder();
-        System.out.println();
+//        int cek = JOptionPane.showConfirmDialog(null, "Lanjut ke delete ?", "Warning", JOptionPane.YES_NO_OPTION);
+//        if (cek == 1) {
+//            System.exit(0);
+//        }
+//        System.out.println();
+//        System.out.print("In-Order : ");
+//        bst.inorder();
+//        System.out.println("\nPost-Order");
+//        bst.postorder();
+//        System.out.println("\nPre-Order");
+//        bst.preorder();
 
-        int[] barisNilai = {11, 30, 56, 63, 100, 80, 37, 65};
 
-        for (int j : barisNilai) {
+        for (int j : delList) {
             int status = JOptionPane.showConfirmDialog(null, "Delete " + j + " ?", "Warning", JOptionPane.YES_NO_OPTION);
             if (status == 1)
                 break;
             if (bst.search(j)) {
+//                bst.deleteIter(j);
                 bst.delete(j);
                 SwingUtilities.updateComponentTreeUI(gui.frame);
                 JOptionPane.showMessageDialog(null, j + " berhasil dihapus");

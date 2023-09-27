@@ -62,6 +62,82 @@ public class tree {//deklarasi class
         return false;//return false
     }
 
+    public boolean deleteIter(int data) {
+        if (!search(data)) {
+            return false;
+        }
+
+        treeNode current = root;
+        treeNode parent = null;
+        boolean isLeftChild = false;
+
+        // Find the node to delete and its parent
+        while (current.getiData() != data) {
+            parent = current;
+            if (data < current.getiData()) {
+                current = current.getLeft();
+                isLeftChild = true;
+            } else {
+                current = current.getRight();
+                isLeftChild = false;
+            }
+        }
+//0 ANAK
+        if (current.getLeft() == null && current.getRight() == null) {
+            if (current == root) {
+                root = null;
+            } else if (isLeftChild) {
+                parent.setLeft(null);
+            } else {
+                parent.setRight(null);
+            }
+        //1 ANAK
+        } else if (current.getLeft() == null) {
+            if (current == root) {
+                root = current.getRight();
+            } else if (isLeftChild) {
+                parent.setLeft(current.getRight());
+            } else {
+                parent.setRight(current.getRight());
+            }
+        } else if (current.getRight() == null) {
+            if (current == root) {
+                root = current.getLeft();
+            } else if (isLeftChild) {
+                parent.setLeft(current.getLeft());
+            } else {
+                parent.setRight(current.getLeft());
+            }
+        } else {
+            treeNode successor = findSuccessor(current);
+            if (current == root) {
+                root = successor;
+            } else if (isLeftChild) {
+                parent.setLeft(successor);
+            } else {
+                parent.setRight(successor);
+            }
+            successor.setLeft(current.getLeft());
+        }
+
+        return true;
+    }
+
+    private treeNode findSuccessor(treeNode node) {
+        treeNode successorParent = node;
+        treeNode successor = node.getRight();
+        while (successor.getLeft() != null) {
+            successorParent = successor;
+            successor = successor.getLeft();
+        }
+        if (successor != node.getRight()) {
+            successorParent.setLeft(successor.getRight());
+            successor.setRight(node.getRight());
+        }
+        return successor;
+    }
+
+
     public Boolean delete(int data) {
         //method public boolean untuk delete node dengan parameter integer
         if (!search(data)) {//jika hasil search false
@@ -170,17 +246,17 @@ public class tree {//deklarasi class
 
     public static void main(String[] args) {//main
         tree bst = new tree();//deklarasi objek tree
+//        treeGUI tree = new treeGUI(bst);
 
         System.out.println("Binary Search Tree Test\n");//cetak teks
 
-        int[] dataList = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
-        int[] delList = {100, 63, 65, 60, 95, 88, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37};
+        int[] dataList = { 60, 55, 100, 107, 67, 105, 57, 45, 59, 106, 43};
+        int[] delList = { 100, 55, 60, 57, 67, 105, 106, 59};
         //deklarasi array berisi nilai yang akan dimasukan ke tree
 
         for (int j : dataList) {//looping for
             bst.insert(j);//memanggil method insert dari tree dengan parameter elemen ke j dari data list
         }
-/*
         for(int i : delList){
             System.out.println("Deleting "+i+" from tree");
             if (bst.delete(i)){
@@ -192,7 +268,8 @@ public class tree {//deklarasi class
             bst.inorder();
             System.out.println("");
         }
-        */
+
+
     }
 
     public treeNode getRoot() {
