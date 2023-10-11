@@ -82,7 +82,7 @@ public class tree {//deklarasi class
                 isLeftChild = false;
             }
         }
-//0 ANAK
+
         if (current.getLeft() == null && current.getRight() == null) {
             if (current == root) {
                 root = null;
@@ -91,7 +91,7 @@ public class tree {//deklarasi class
             } else {
                 parent.setRight(null);
             }
-        //1 ANAK
+
         } else if (current.getLeft() == null) {
             if (current == root) {
                 root = current.getRight();
@@ -109,6 +109,7 @@ public class tree {//deklarasi class
                 parent.setRight(current.getLeft());
             }
         } else {
+
             treeNode successor = findSuccessor(current);
             if (current == root) {
                 root = successor;
@@ -118,11 +119,8 @@ public class tree {//deklarasi class
                 parent.setRight(successor);
             }
             successor.setLeft(current.getLeft());
-        }
-
-        return true;
+        }return true;
     }
-
     private treeNode findSuccessor(treeNode node) {
         treeNode successorParent = node;
         treeNode successor = node.getRight();
@@ -136,6 +134,21 @@ public class tree {//deklarasi class
         }
         return successor;
     }
+
+    private treeNode findPredecessor(treeNode node) {
+        treeNode predecessorParent = node;
+        treeNode predecessor = node.getLeft();
+        while (predecessor.getRight() != null) {
+            predecessorParent = predecessor;
+            predecessor = predecessor.getRight();
+        }
+        if (predecessor != node.getLeft()) {
+            predecessorParent.setRight(predecessor.getLeft());
+            predecessor.setLeft(node.getLeft());
+        }
+        return predecessor;
+    }
+
 
 
     public Boolean delete(int data) {
@@ -191,6 +204,16 @@ public class tree {//deklarasi class
         return minv;//return nilai minv
     }
 
+    public int maxValue(treeNode root)//method mencari successor
+    {
+        int maxv = root.getiData();//simpan data dari node ke minv
+        while (root.getRight() != null) {//selama masih ada left dari node
+            maxv = root.getRight().getiData();//simpan data left dari node ke minv
+            root = root.getRight();//update node dengan left dari node
+        }
+        return maxv;//return nilai minv
+    }
+
     public void preorder() {//method public preorder
         preorder(root);//memanggil method preorder dari root
     }
@@ -244,30 +267,67 @@ public class tree {//deklarasi class
 
     }
 
+    public int size() {
+        return size(root);
+    }
+
+    private int size(treeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        return 1 + size(node.getLeft()) + size(node.getRight());
+    }
+
+    public int getHeight() {
+        return getHeight(root);
+    }
+
+    private int getHeight(treeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        int leftHeight = getHeight(node.getLeft());
+        int rightHeight = getHeight(node.getRight());
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    public boolean isComplete() {
+        return isComplete(root, 0, size(root));
+    }
+
+    private boolean isComplete(treeNode node, int index, int size) {
+        if (node == null) {
+            return true;
+        }
+
+        if (index >= size) {
+            return false;
+        }
+
+        return isComplete(node.getLeft(), 2 * index + 1, size) &&
+                isComplete(node.getRight(), 2 * index + 2, size);
+    }
+
+
     public static void main(String[] args) {//main
         tree bst = new tree();//deklarasi objek tree
-//        treeGUI tree = new treeGUI(bst);
+        treeGUI tree = new treeGUI(bst);
 
         System.out.println("Binary Search Tree Test\n");//cetak teks
+//        int[] temp = {25,20,5,34,50,30,10};
+        int[] temp = {25,20,5,34,50,30,22, 4}; // Use this for complete tree
 
-        int[] dataList = { 60, 55, 100, 107, 67, 105, 57, 45, 59, 106, 43};
-        int[] delList = { 100, 55, 60, 57, 67, 105, 106, 59};
-        //deklarasi array berisi nilai yang akan dimasukan ke tree
-
-        for (int j : dataList) {//looping for
+        for (int j : temp) {//looping for
             bst.insert(j);//memanggil method insert dari tree dengan parameter elemen ke j dari data list
         }
-        for(int i : delList){
-            System.out.println("Deleting "+i+" from tree");
-            if (bst.delete(i)){
-                System.out.println(i+" berhasil di hapus dari tree");
-            }else{
-                System.out.println(i+" tidak ada dalam tree");
-            }
-            System.out.print("InOrder : ");
-            bst.inorder();
-            System.out.println("");
+        System.out.println("Size : "+bst.size());
+        System.out.println("Height :"+bst.getHeight());
+        System.out.println("MaxV : "+ bst.maxValue(bst.root));
+        if (bst.isComplete()){
+            System.out.println("Complete Tree");;
         }
+
+
 
 
     }

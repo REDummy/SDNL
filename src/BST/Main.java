@@ -31,8 +31,8 @@ public class Main {
             if (status == 1)
                 break;
             if (bst.search(j)) {
-//                bst.deleteIter(j);
-                bst.delete(j);
+                bst.deleteIter(j);
+//                bst.delete(j);
                 SwingUtilities.updateComponentTreeUI(gui.frame);
                 JOptionPane.showMessageDialog(null, j + " berhasil dihapus");
                 System.out.print("Hasil In-Order setelah " + j + " dihapus : ");
@@ -45,6 +45,7 @@ public class Main {
         }
         JOptionPane.showMessageDialog(null, "Delete node sudah selesai dijalankan", "Warning !", JOptionPane.ERROR_MESSAGE);
         gui.frame.dispose();
+
 
     }
 }

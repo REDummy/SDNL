@@ -8,7 +8,7 @@ public class TestAVLTree {
         AVLTree<Integer> tree = new AVLTree<>(new Integer[]{});
         AVLtreeGUI temp = new AVLtreeGUI(tree);
         int[] dataList = {25, 20, 5, 34, 50, 30, 10};
-        int[] delList = {30, 34, 50};
+        int[] delList = {34, 30, 50,5};
         //deklarasi array berisi nilai yang akan dimasukan ke tree
 
         for (int j : dataList) {//looping for
