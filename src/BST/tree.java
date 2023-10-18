@@ -308,6 +308,25 @@ public class tree {//deklarasi class
                 isComplete(node.getRight(), 2 * index + 2, size);
     }
 
+    // Find the value equal to or less but closest to the parameter
+    public int findClosestValue(int target) {
+        treeNode current = root;
+        int closest = root.getiData();
+
+        while (current != null) {
+            if (target == current.getiData()) {
+                return current.getiData(); // Found an exact match
+            } else if (target < current.getiData()) {
+                current = current.getLeft();
+            } else {
+                closest = current.getiData();
+                current = current.getRight();
+            }
+        }
+
+        return closest;
+    }
+
 
     public static void main(String[] args) {//main
         tree bst = new tree();//deklarasi objek tree
@@ -316,7 +335,6 @@ public class tree {//deklarasi class
         System.out.println("Binary Search Tree Test\n");//cetak teks
 //        int[] temp = {25,20,5,34,50,30,10};
         int[] temp = {25,20,5,34,50,30,22, 4}; // Use this for complete tree
-
         for (int j : temp) {//looping for
             bst.insert(j);//memanggil method insert dari tree dengan parameter elemen ke j dari data list
         }
@@ -326,6 +344,10 @@ public class tree {//deklarasi class
         if (bst.isComplete()){
             System.out.println("Complete Tree");;
         }
+
+        int target = 23;
+        int closestValue = bst.findClosestValue(target);
+        System.out.println("Closest value to " + target + " is " + closestValue);
 
 
 
